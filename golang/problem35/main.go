@@ -26,48 +26,43 @@ func get_circulars(n int) []int{
     return circulars
 }
 
-func get_divisors(n int) []int{
-    root := math.Sqrt(float64(n))
-    divisors := make([]int, 0)
-    for i := range int(root){
-        i += 1
+func is_prime(n int) bool{
+    root := int(math.Sqrt(float64(n)))
+    if n == 1{
+        return false
+    }
+    for i := range root - 1{
+        i += 2
         if n % i == 0{
-            divisors = append(divisors, n / i)
-            if i * i != n{
-                divisors = append(divisors, i)
-            }
+            return false
         }
     }
 
-    return divisors
-}
-
-func is_prime(n int) bool{
-    if len(get_divisors(n)) == 2{
-        return true
-    }
-    return false
+    return true
 }
 
 func get_count_circular_primes(n int) int{
- count := 0
- for i := range n{
-     circulars := get_circulars(i)
-     temp_counter := 0
-     for _, circular := range circulars{
-        if is_prime(circular) {
-            temp_counter += 1
-        } else{
-            break
+    count := 0
+    for i := range n{
+        i += 1
+        if is_prime(i){
+            circulars := get_circulars(i)
+            temp_counter := 0
+            for _, circular := range circulars{
+                if is_prime(circular) {
+                    temp_counter += 1
+                } else{
+                    break
+                }
+            }
+            if temp_counter == len(circulars){
+                fmt.Println(i)
+                count += 1
+            }            
         }
-     }
-     if temp_counter == len(circulars){
-        fmt.Println(i)
-        count += 1
-     }
- }
+    }
 
- return count
+    return count
 }
 
 func main(){
